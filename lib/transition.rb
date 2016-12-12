@@ -1,13 +1,14 @@
 # Transition are the movements from State to State.
 class Transition
   DEFAULT_ARGS = {
+    transition_name: 'T1',
     source: 'Start',
     destination: 'End',
     action: 'Step X',
     max_count: 0
   }.freeze
 
-  attr_reader :max_count, :source, :destination, :action
+  attr_reader :transition_name, :max_count, :source, :destination, :action
 
   def initialize(args = {})
     args = DEFAULT_ARGS.merge(args)
@@ -18,6 +19,7 @@ class Transition
     @source = args[:source]
     @destination = args[:destination]
     @action = args[:action]
+    @transition_name = args[:transition_name]
   end
 
   def source?(source_name)
