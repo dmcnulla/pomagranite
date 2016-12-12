@@ -5,24 +5,24 @@ require 'test/unit'
 class TestTransition < Test::Unit::TestCase
   def test_defaults
     trans = Transition.new
-    assert(trans.transition_name == 'T1', 'Wrong name.')
+    assert(trans.current_name == 'T1', 'Wrong name.')
     assert(trans.source == 'Start', 'Wrong source.')
     assert(trans.destination == 'End', 'Wrong destination.')
     assert(trans.max_count == 0, 'Wrong max.')
-    assert(trans.action == 'Step X', 'Wrong action.')
+    assert(trans.code == 'Step X', 'Wrong action.')
   end
 
   def test_non_defaults
-    trans = Transition.new(transition_name: 'T2',
+    trans = Transition.new(current_name: 'T2',
                            source: 'mysource',
                            destination: 'mydest',
                            max_count: 1,
-                           action: 'myaction')
-    assert(trans.transition_name == 'T2', 'Wrong name.')
+                           code: 'myaction')
+    assert(trans.current_name == 'T2', 'Wrong name.')
     assert(trans.source == 'mysource', 'Wrong source.')
     assert(trans.destination == 'mydest', 'Wrong destination.')
     assert(trans.max_count == 1, 'Wrong max.')
-    assert(trans.action == 'myaction', 'Wrong action.')
+    assert(trans.code == 'myaction', 'Wrong action.')
   end
 
   def test_bad_max_count
@@ -48,8 +48,8 @@ class TestTransition < Test::Unit::TestCase
   end
 
   def test_transition_data
-    trans = Transition.new(destination: 'MyEnd', action: 'MyAction')
-    assert(trans.transition_data[0] == 'MyEnd', 'transition_data not working.')
-    assert(trans.transition_data[1] == 'MyAction', 'transition_data not working.')
+    trans = Transition.new(destination: 'MyEnd', code: 'MyAction')
+    assert_equal('MyEnd', trans.transition_data[0], 'transition_data not working.')
+    assert_equal('MyAction', trans.transition_data[1], 'transition_data not working.')
   end
 end

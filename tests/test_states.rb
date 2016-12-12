@@ -5,24 +5,22 @@ require 'test/unit'
 class TestState < Test::Unit::TestCase
   def test_defaults
     state = State.new
-    assert_equal(state.state_name, 'Start', 'Wrong name.')
-    assert_equal(state.transitions[0], 'T1', 'Wrong transition array.')
-    assert_equal(state.verification, 'Verify(X)', 'Wrong verification.')
-    assert_equal(state.max_count, 0, 'Wrong max.')
+    assert_equal('Start', state.current_name, 'Wrong name.')
+    assert_equal(1, state.transition_array.length, 'Wrong transition array.')
+    assert_equal('Verify(X)', state.code, 'Wrong code.')
+    assert_equal(0, state.max_count, 'Wrong max.')
   end
 
   def test_non_defaults
-    state = State.new(state_name: 'MyStart',
+    state = State.new(current_name: 'MyStart',
                       transitions: ['T1', 'T2'],
-                      verification: 'Verify(X, Y)',
+                      code: 'Verify(X, Y)',
                       max_count: 1)
-    assert_equal(state.state_name, 'MyStart', 'Wrong name.')
-    transitions = state.transitions
-    assert_equal(transitions.length, 2, 'Wrong transition array.')
-    assert_equal(transitions[0], 'T1', 'Wrong transition array.')
-    assert_equal(transitions[1], 'T2', 'Wrong transition array.')
-    assert_equal(state.verification, 'Verify(X, Y)', 'Wrong verification.')
-    assert_equal(state.max_count, 1, 'Wrong max.')
+    assert_equal('MyStart', state.current_name, 'Wrong name.')
+    assert_equal(2, state.transition_array.length, 'Wrong transition array.')
+    assert_equal('T1', state.transition_array[0], 'Wrong transition array.')
+    assert_equal('Verify(X, Y)', state.code, 'Wrong code.')
+    assert_equal(1, state.max_count, 'Wrong max.')
   end
 
   def test_bad_max_count
@@ -35,7 +33,7 @@ class TestState < Test::Unit::TestCase
     t_list = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
     state = State.new(transitions: t_list)
     t_list.length.times do
-      trans = state.pick_transition
+      trans = state.next_transition
       assert(t_list.include?(trans), "Transaction isn't in the list: #{trans} in #{t_list}")
     end
   end
